@@ -8,7 +8,7 @@
           class: 'form-control search-box input-lg' %>
       </div>
       <div class="col-md-2">
-        <%= button_tag(type: :submit, class: 'btn btn-lg btn-success') do %>
+        <%= button_tag(type: :submit, class: 'btn btn-lg btn-success', data: { turbolinks: false }) do %>
           <i class="fa fa-search"></i> Look up a friend
         <% end %>
       </div>
@@ -33,7 +33,7 @@
                         class: "btn btn-xs btn-success", method: :post
                       %>
                     <% else %>
-                      <span class="lable label-primary">
+                      <span class="label label-primary">
                         You are friends
                       </span>
                     <% end %>
