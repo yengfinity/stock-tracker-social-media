@@ -39,8 +39,15 @@ class UserStocksController < ApplicationController
 
     respond_to do |format|
       if @user_stock.save
-        format.html { redirect_to my_portfolio_path,
-          notice: "#{@user_stock.stock.ticker} stock was successfully added."
+
+        format.html {
+          if Rails.application.routes.recognize_path(request.referrer)[:controller] == "users"
+            redirect_to user_path(Rails.application.routes.recognize_path(request.referrer)[:id]),
+            notice: "#{@user_stock.stock.ticker} stock was successfully added."
+          else
+            redirect_to my_portfolio_path,
+            notice: "#{@user_stock.stock.ticker} stock was successfully added."
+          end
         }
         format.json { render :show, status: :created, location: @user_stock }
       else
