@@ -1,5 +1,6 @@
 class UserStocksController < ApplicationController
-  before_action :set_user_stock, only: [:show, :edit, :update, :destroy]
+  before_action :set_user_stock, only: [:show, :edit, :update]
+  before_action :set_user_stock_for_destroy, only: [:destroy]
 
   def index
     @user_stocks = UserStock.all
@@ -39,7 +40,7 @@ class UserStocksController < ApplicationController
     respond_to do |format|
       if @user_stock.save
         format.html { redirect_to my_portfolio_path,
-          notice: '#{@user_stock.stock.ticker} stock was successfully added.'
+          notice: "#{@user_stock.stock.ticker} stock was successfully added."
         }
         format.json { render :show, status: :created, location: @user_stock }
       else
@@ -64,7 +65,7 @@ class UserStocksController < ApplicationController
   def destroy
     @user_stock.destroy
     respond_to do |format|
-      format.html { redirect_to user_stocks_url, notice: 'User stock was successfully destroyed.' }
+      format.html { redirect_to my_portfolio_path, notice: 'Stock was successfully removed from portfolio.' }
       format.json { head :no_content }
     end
   end
@@ -73,6 +74,10 @@ class UserStocksController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user_stock
       @user_stock = UserStock.find(params[:id])
+    end
+
+    def set_user_stock_for_destroy
+      @user_stock = UserStock.where(stock_id: params[:id], user: current_user).first
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
