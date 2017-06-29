@@ -7,6 +7,7 @@
       <% if @user.id == current_user.id %>
       <th>Actions</th>
       <% end %>
+      <th>Add</th>
     </tr>
   </thead>
   <tbody>
@@ -23,6 +24,20 @@
                               :class => "btn btn-xs btn-danger" %>
       </td>
       <% end %>
+      <td>
+        <% if current_user.can_add_stock?(user_stock.ticker) %>
+          <%= link_to "Add to my stocks",
+            user_stocks_path(user: current_user,
+              stock_ticker: user_stock.ticker,
+              stock_id: user_stock.id ? user_stock.id : ''),
+              class: 'btn btn-sx btn-success', method: :post
+          %>
+        <% else %>
+        <span class="label label-default">
+          Stock cannot be added because you have already added
+        <% end %>
+
+      </td>
     </tr>
     <% end %>
   </tbody>
